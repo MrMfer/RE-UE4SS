@@ -163,13 +163,13 @@ namespace RC
             //*/
 
             Output::send(STR("Console created\n"));
-            Output::send(STR("UE4SS - v{}.{}.{}{}{} - Build #{}\n"),
+            Output::send(STR("UE4SS - v{}.{}.{}{}{} - Git SHA #{}\n"),
                          UE4SS_LIB_VERSION_MAJOR,
                          UE4SS_LIB_VERSION_MINOR,
                          UE4SS_LIB_VERSION_HOTFIX,
                          std::format(L"{}", UE4SS_LIB_VERSION_PRERELEASE == 0 ? L"" : std::format(L" PreRelease #{}", UE4SS_LIB_VERSION_PRERELEASE)),
                          std::format(L"{}", UE4SS_LIB_BETA_STARTED == 0 ? L"" : (UE4SS_LIB_IS_BETA == 0 ? L" Beta #?" : std::format(L" Beta #{}", UE4SS_LIB_VERSION_BETA))),
-                         UE4SS_LIB_BUILD_NUMBER);
+                         to_wstring(UE4SS_LIB_BUILD_GITSHA));
 #ifdef WITH_CASE_PRESERVING_NAME
             Output::send(STR("WITH_CASE_PRESERVING_NAME: Yes\n\n"));
 #else
@@ -265,7 +265,6 @@ namespace RC
         m_game_path_and_exe_name = game_exe_path;
         m_object_dumper_output_directory = m_game_executable_directory;
 
-        bool has_game_specific_config{};
         for (const auto& item : std::filesystem::directory_iterator(m_root_directory))
         {
             if (!item.is_directory()) { continue; }
@@ -527,7 +526,7 @@ namespace RC
                 });
 
                 Output::send(STR("UStruct\n"));
-                uint32_t ustruct_size = retrieve_vtable_layout_from_ini(STR("UStruct"), [&](uint32_t index, File::StringType& item) {
+                retrieve_vtable_layout_from_ini(STR("UStruct"), [&](uint32_t index, File::StringType& item) {
                     uint32_t offset = calculate_virtual_function_offset(index, uobjectbase_size, uobjectbaseutility_size, uobject_size, ufield_size);
                     Output::send(STR("UStruct::{} = 0x{:X}\n"), item, offset);
                     Unreal::UField::VTableLayoutMap.emplace(item, offset);
@@ -588,8 +587,6 @@ namespace RC
         m_shared_functions.is_ue4ss_initialized_function = &LuaLibrary::is_ue4ss_initialized;
         Output::send(STR("m_shared_functions: {}\n"), static_cast<void*>(&m_shared_functions));
     }
-
-    static FName g_player_controller_name{};
 
     auto UE4SSProgram::on_program_start() -> void
     {
@@ -776,7 +773,7 @@ namespace RC
             else
             {
                 // Create the mod but don't install it yet
-                m_mods.emplace_back(std::make_unique<Mod>(*this, std::move(sub_directory.path().stem().wstring()), std::move(sub_directory.path().wstring())));
+                m_mods.emplace_back(std::make_unique<Mod>(*this, sub_directory.path().stem().wstring(), sub_directory.path().wstring()));
             }
         }
 
@@ -850,8 +847,6 @@ namespace RC
             // 'mods.txt' exists, lets parse it
             std::wifstream mods_stream{enabled_mods_file};
 
-            size_t mod_count{};
-
             std::wstring current_line;
             while (std::getline(mods_stream, current_line))
             {
@@ -860,9 +855,6 @@ namespace RC
 
                 // Don't parse if the line is impossibly short (empty lines for example)
                 if (current_line.size() <= 4) { continue; }
-
-                // Increasing the mod counter but only after a valid line has been found
-                ++mod_count;
 
                 // Remove all spaces
                 auto end = std::remove(current_line.begin(), current_line.end(), L' ');
