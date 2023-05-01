@@ -1,1 +1,0 @@
-#define UE4SS_LIB_BUILD_GITSHA "f9542ad"
