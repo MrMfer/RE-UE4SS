@@ -1,6 +1,6 @@
 # Unreal Engine 4/5 Scripting System - Development Branch
 
-> WARNING: This is the version of the site that contains changes from the 3.XDev branch. The API and features are subject to change at any time. If you are developing mods for UE4SS, you should use the [stable version](https://github.com/UE4SS-RE/docs) of the site instead.
+> WARNING: This is the version of the site that contains changes from the 3.XDev branch. The API and features are subject to change at any time. If you are developing mods for UE4SS, you should use the [stable version](https://ue4ss-re.github.io/docs) of the site instead.
 
 Lua scripting system platform, C++ Modding API, SDK generator, blueprint mod loader, live property editor and other dumping utilities for UE4/5 games. 
 
