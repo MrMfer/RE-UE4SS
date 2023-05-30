@@ -15,7 +15,7 @@ Lua scripting system platform, C++ Modding API, SDK generator, blueprint mod loa
 - [Universal UE Mods](feature-overview/universal-mods.md): Unlock the game console and other universal mods
 - [Dumpers for File Parsing](feature-overview/dumpers.md#usmap-dumper): Generate `.usmap` mapping files for unversioned properties
 - [UMAP Recreation Dumper](feature-overview/dumpers.md#umap-recreation-dumper): Dump all loaded actors to file to generate `.umaps` in-editor
-- Other Features, including [Experimental](feature-overview/experimental.md) features at times 
+- Other Features, including [Experimental](feature-overview/experimental.md) features at times  
 
 ## Targeting UE Versions: From 4.12 To 5.2
 
