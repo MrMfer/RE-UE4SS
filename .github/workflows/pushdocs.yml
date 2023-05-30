@@ -7,9 +7,7 @@ on:
       - 3.XDev
       - TestNewDocs
     paths:
-      - "Release/docs/**"
-      - "3.XDev/docs/**"
-      - "TestNewDocs/docs/**"
+      - "docs/**"
 
 jobs:
   push_to_repo:
