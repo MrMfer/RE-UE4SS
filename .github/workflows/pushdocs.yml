@@ -22,7 +22,6 @@ jobs:
           sudo apt-get install tree
       - name: Check docs directory tree
         run: |
-          cd docs
           tree -d
 
   push_to_repo:
@@ -43,7 +42,7 @@ jobs:
         with:
           branch: main
           repository: UE4SS-RE/docs
-          directory: docs/src
+          directory: src
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload to dev/src directory
         if: github.ref == 'refs/heads/3.XDev'
@@ -51,7 +50,7 @@ jobs:
         with:
           branch: main
           repository: UE4SS-RE/docs
-          directory: docs/dev/src
+          directory: dev/src
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Test upload to dev/src directory
         if: github.ref == 'refs/heads/TestNewDocs'
@@ -59,5 +58,5 @@ jobs:
         with:
             branch: main
             repository: UE4SS-RE/docs
-            directory: docs/dev/src
+            directory: dev/src
             github_token: ${{ secrets.GITHUB_TOKEN }}
