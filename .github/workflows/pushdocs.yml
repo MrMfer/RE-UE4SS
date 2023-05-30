@@ -36,27 +36,37 @@ jobs:
         with:
           name: docs
           path: Release/docs/
-      - name: Upload to main branch
-        if: github.ref == 'refs/heads/Release'
-        uses: ad-m/github-push-action@master
+#      - name: Upload to main branch
+#        if: github.ref == 'refs/heads/Release'
+#        uses: ad-m/github-push-action@master
+#        with:
+#          branch: main
+#          repository: UE4SS-RE/docs
+#          directory: src
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Upload to dev/src directory
+#        if: github.ref == 'refs/heads/3.XDev'
+#        uses: ad-m/github-push-action@master
+#        with:
+#          branch: main
+#          repository: UE4SS-RE/docs
+#          directory: dev/src
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Test upload to dev/src directory
+#        if: github.ref == 'refs/heads/TestNewDocs'
+#        uses: ad-m/github-push-action@master
+#        with:
+#            branch: main
+#            repository: UE4SS-RE/docs
+#            directory: dev/src
+#            github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Test upload to dev/src diretory 2
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: main
-          repository: UE4SS-RE/docs
-          directory: src
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload to dev/src directory
-        if: github.ref == 'refs/heads/3.XDev'
-        uses: ad-m/github-push-action@master
-        with:
-          branch: main
-          repository: UE4SS-RE/docs
-          directory: dev/src
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Test upload to dev/src directory
-        if: github.ref == 'refs/heads/TestNewDocs'
-        uses: ad-m/github-push-action@master
-        with:
-            branch: main
-            repository: UE4SS-RE/docs
-            directory: dev/src
-            github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_directory: 'docs'
+          destination-github-username: 'UE4SS-RE'
+          destination-repository-name: 'docs'
+          target-branch: main
+          target-directory: 'dev/src'
